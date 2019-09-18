@@ -19,12 +19,10 @@
   background-size: cover
   background-repeat: no-repeat
   background-position: center
-  border: 1px solid green
 
 .header__logo
   width: 212px
   height: 125px
-  border: 1px solid white
 
 .header__logo-star-wars
   position: relative

@@ -4,18 +4,28 @@
       <app-header/>
       <router-view/>
       <app-footer/>
+
+      <app-modal v-show="modalShow"></app-modal>
     </div>
   </transition>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import Modal from '@/components/Modal.vue'
 
 export default {
+  computed: {
+    ...mapGetters([
+      'modalShow'
+    ]),
+  },
   components: {
     'app-header': Header,
-    'app-footer': Footer
+    'app-footer': Footer,
+    'app-modal': Modal
   }
 }
 </script>
@@ -29,10 +39,24 @@ body
   display: flex
   flex-direction: column
   margin: 0
+  .header,
+  .footer,
+  .home
+    filter: blur(0)
+    transition: filter 0.3s
+  &.open
+    overflow: hidden
+    .header,
+    .footer,
+    .home
+      filter: blur(30px)
 
 img
   width: 100%
   height: auto
+
+div
+  box-sizing: border-box
 
 #app
   flex-grow: 1
@@ -43,7 +67,7 @@ img
   -moz-osx-font-smoothing: grayscale
   text-align: center
   color: #ffffff
-  background-color: #808080
+  background-color: #333333
 
 .fade-in-enter,
 .fade-in-enter-active
