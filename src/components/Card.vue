@@ -54,7 +54,6 @@ export default {
     ]),
     getCharacterSpecies (url) {
       var context = this
-
       if (url !== null) {
         axios.get(url)
           .then(res => {
@@ -64,8 +63,6 @@ export default {
       }
     },
     getCharacterHomeworld (url) {
-      var context = this
-
       if (url !== null) {
         return new Promise (function (resolve, reject) {
           axios.get(url)
@@ -77,13 +74,10 @@ export default {
       }
     },
     getCharacterFilms (url) {
-      var context = this
-
       if (url !== null) {
         return new Promise (function (resolve, reject) {
           axios.get(url)
             .then(res => {
-              console.log(res)
               resolve(res.data.title)
             })
             .catch(error => console.log(error))
@@ -91,29 +85,31 @@ export default {
       }
     },
     hide (e) {
-      if (document.querySelector('.modal-container') !== null) {
-        var modalId = document.querySelector('.modal-container').getAttribute('id')
+      if (document.querySelector('.modal') !== null) {
+        var modalId = document.querySelector('.modal').getAttribute('id')
       }
-      if (!e.target.classList.contains('modal-container') && e.target.closest('.modal-container') === null) {
+      if (!e.target.classList.contains('modal') && e.target.closest('.modal') === null) {
         this.hideModal(modalId)
       }
     },
     showModalCharacter (character, modalId) {
+      var avatar = document.querySelector('.modal__avatar')
+      var name = document.querySelector('.modal__name')
+      var birth = document.querySelector('.modal__content-item_type_birth .modal__content-item-descr')
+      var species = document.querySelector('.modal__content-item_type_species .modal__content-item-descr')
+      var gender = document.querySelector('.modal__content-item_type_gender .modal__content-item-descr')
+      var homeworld = document.querySelector('.modal__content-item_type_homeworld .modal__content-item-descr')
+      var films = document.querySelector('.modal__content-item_type_films .modal__content-item-descr')
 
-      console.log(character)
-      var birth = document.querySelector('.modal__content-item_type_birth .modal__content-item-descr'),
-          species = document.querySelector('.modal__content-item_type_species .modal__content-item-descr'),
-          gender = document.querySelector('.modal__content-item_type_gender .modal__content-item-descr'),
-          homeworld = document.querySelector('.modal__content-item_type_homeworld .modal__content-item-descr'),
-          films = document.querySelector('.modal__content-item_type_films .modal__content-item-descr')
-
+      avatar.textContent = character.name.split('').shift()
+      avatar.setAttribute('style', 'background-color: #' + this.randomColor)
+      name.textContent = character['name']
       birth.textContent = character['birth_year']
       species.textContent = this.characterSpecies
       gender.textContent = character['gender']
 
       this.getCharacterHomeworld(character['homeworld'])
         .then(resultHomeworld => {
-          console.log(resultHomeworld)
           homeworld.textContent = resultHomeworld
           let promiseFilms = []
           for (let i = 0; i < character['films'].length; i++) {
@@ -122,8 +118,10 @@ export default {
           return Promise.all(promiseFilms)
         })
         .then(resultFilms => {
-          console.log(resultFilms)
-          films.textContent = resultFilms
+          films.innerHTML = ''
+          resultFilms.forEach(function (film) {
+            films.innerHTML += '<span>' + film + '</span>'
+          })
           this.showModal(modalId)
         })
     }
@@ -234,5 +232,5 @@ export default {
   .card
     &:hover,
     &:active
-      cursor: pointer
+      cursor: url('../assets/img/pointer.svg'), pointer
 </style>

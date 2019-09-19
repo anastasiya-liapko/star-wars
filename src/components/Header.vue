@@ -36,15 +36,18 @@
     left: 0
     right: 0
     bottom: 0
+    height: 100%
     background-image: url('../assets/img/logo.png')
     background-size: 100% auto
 
 .header__logo-star-wars_position_top
   &::before
+    background-position: top
 
 .header__logo-star-wars_position_bottom
   &::before
-    top: -103%
+    top: 2px
+    background-position: bottom
 
 .header__logo-descr
   margin: 0

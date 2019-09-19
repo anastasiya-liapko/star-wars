@@ -5,23 +5,24 @@
       <router-view/>
       <app-footer/>
 
-      <app-modal v-show="modalShow"></app-modal>
+      <app-modal></app-modal>
     </div>
   </transition>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import Modal from '@/components/Modal.vue'
 
 export default {
-  computed: {
-    ...mapGetters([
-      'modalShow'
-    ]),
-  },
+  // computed: {
+  //   ...mapGetters([
+  //     'modalShow',
+  //     'modalId'
+  //   ])
+  // },
   components: {
     'app-header': Header,
     'app-footer': Footer,
@@ -45,7 +46,7 @@ body
     filter: blur(0)
     transition: filter 0.3s
   &.open
-    overflow: hidden
+    // overflow: hidden
     .header,
     .footer,
     .home
@@ -55,7 +56,8 @@ img
   width: 100%
   height: auto
 
-div
+div,
+p
   box-sizing: border-box
 
 #app

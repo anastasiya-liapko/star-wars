@@ -1,12 +1,12 @@
 <template>
   <transition name="modal" appear>
-    <div class="modal-mask">
+    <div
+      class="modal-mask"
+      v-show="modalShow && modalId === id">
       <div class="modal-wrapper">
         <div :id="id" class="modal">
 
-          <button class="modal__close" @click="hideModal(id)">
-            <span class="icon-close"></span>
-          </button>
+          <button class="modal__close" @click="hideModal(id)"></button>
 
           <div class="modal__header">
             <p class="modal__avatar">N</p>
@@ -42,13 +42,19 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
     return {
       id: 'js-modalCharacter'
     }
+  },
+  computed: {
+    ...mapGetters([
+      'modalShow',
+      'modalId'
+    ])
   },
   methods: {
     ...mapActions([
@@ -73,15 +79,16 @@ export default {
   background-color: rgba(128, 128, 128, 0.01)
   transition: opacity .3s ease
 
-.modal-wrapper
-  display: table-cell
-  vertical-align: middle
+// .modal-wrapper
+//   display: table-cell
+//   vertical-align: middle
 
 .modal
   position: relative
   width: 100vw
-  height: 100vh
-  padding: 48px 24px 24px 24px
+  min-height: 100vh
+  height: auto
+  padding: 48px 24px
   background-color: $color-card
   transition: all .3s ease
   border: 1px solid green
@@ -93,6 +100,18 @@ export default {
   background-color: transparent
   border: none
   border-radius: 0
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    width: 12px
+    height: 12px
+    background-size: contain
+    background-position: center
+    background-repeat: no-repeat
+    background-image: url('../assets/img/close.svg')
+    border: 1px solid red
   &:active
     outline: 0
     box-shadow: 0
@@ -124,6 +143,7 @@ export default {
   font-size: 22px
   font-weight: 700
   line-height: 1
+  text-align: left
   color: #ffffff
 
 .modal__content
@@ -132,12 +152,17 @@ export default {
   height: auto
 
 .modal__content-item
-  display: table-row
+  display: flex
   width: 100%
   border: 1px solid red
 
 .modal__content-item-name
-  display: table-cell
+  position: relative
+  flex-shrink: 0
+  display: flex
+  align-items: flex-start
+  flex-wrap: nowrap
+  width: 140px
   margin: 0
   padding-left: 30px
   padding-right: 24px
@@ -150,9 +175,45 @@ export default {
   text-align: left
   color: #808080
   border: 1px solid green
+  &::before
+    content: ''
+    position: absolute
+    top: 7px
+    left: 0
+    width: 20px
+    height: 20px
+    background-size: contain
+    background-position: center
+    background-repeat: no-repeat
+    border: 1px solid red
+
+.modal__content-item_type_birth
+  .modal__content-item-name
+    &::before
+      background-image: url('../assets/img/birth.svg')
+
+.modal__content-item_type_species
+  .modal__content-item-name
+    &::before
+      background-image: url('../assets/img/species.svg')
+
+.modal__content-item_type_gender
+  .modal__content-item-name
+    &::before
+      background-image: url('../assets/img/gender.svg')
+
+.modal__content-item_type_homeworld
+  .modal__content-item-name
+    &::before
+      background-image: url('../assets/img/homeworld.svg')
+
+.modal__content-item_type_films
+  .modal__content-item-name
+    &::before
+      background-image: url('../assets/img/films.svg')
 
 .modal__content-item-descr
-  display: table-cell
+  flex-grow: 1
   margin: 0
   padding-top: 11px
   padding-bottom: 10px
@@ -163,6 +224,13 @@ export default {
   text-align: left
   color: #ffffff
   border: 1px solid green
+
+.modal__content-item_type_films
+  .modal__content-item-descr span
+    display: block
+    margin-bottom: 10px
+    &:last-child
+      margin-bottom: 0
 
 .modal-enter
   opacity: 0
