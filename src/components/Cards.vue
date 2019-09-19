@@ -18,17 +18,17 @@ export default {
   data () {
     return {
       domen: process.env.VUE_APP_API,
-      url: '',
       lastVisibleElement: ''
     }
   },
   computed: {
     ...mapGetters([
-      'characters'
+      'characters',
+      'url'
     ])
   },
   created () {
-    this.url = this.domen + 'people/'
+    this.addUrl(this.domen + 'people/')
     this.fetch()
     document.addEventListener('scroll', this.showVisible)
   },
@@ -37,7 +37,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'addCharacters'
+      'addCharacters',
+      'addUrl'
     ]),
     fetch () {
       var context = this
@@ -45,10 +46,9 @@ export default {
       if (context.url !== null) {
         axios.get(context.url)
           .then(res => {
-            console.log(res)
-            context.url = res.data.next
+            context.addUrl(res.data.next)
 
-            if (res.data !== '') {
+            if (res.data.count !== 0) {
               context.addCharacters(res.data.results)
             }
           })
@@ -80,7 +80,17 @@ export default {
 
 <style lang="sass">
 .cards
+  display: flex
+  flex-wrap: wrap
   width: 100%
   height: auto
   border: 1px solid red
+
+@media(min-width: 768px)
+  .cards
+    width: 84.444vw
+
+@media(min-width: 1440px)
+  .cards
+    width: 1216px
 </style>

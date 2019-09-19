@@ -73,7 +73,9 @@ export default {
   z-index: 9998
   top: 0
   left: 0
-  display: table
+  display: flex
+  align-items: center
+  justify-content: center
   width: 100%
   height: 100vh
   background-color: rgba(128, 128, 128, 0.01)
@@ -115,6 +117,8 @@ export default {
   &:active
     outline: 0
     box-shadow: 0
+  &:hover
+    cursor: pointer
 
 .modal__header
   display: flex
@@ -250,4 +254,23 @@ export default {
 .modal-leave,
 .modal-leave-active
   // animation: fade-out 1s ease-out both
+
+@media(min-width: 768px)
+  .modal
+    width: calc(100vw - 48px)
+    min-height: auto
+    padding: 80px
+    padding-bottom: 76px
+    border-radius: 8px
+
+  .modal__name
+    font-size: 24px
+
+  .modal__content-item-name,
+  .modal__content-item-descr
+    font-size: 18px
+
+@media(min-width: 848px)
+  .modal
+    width: 800px
 </style>

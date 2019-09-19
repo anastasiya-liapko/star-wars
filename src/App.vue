@@ -11,18 +11,11 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import Modal from '@/components/Modal.vue'
 
 export default {
-  // computed: {
-  //   ...mapGetters([
-  //     'modalShow',
-  //     'modalId'
-  //   ])
-  // },
   components: {
     'app-header': Header,
     'app-footer': Footer,
@@ -32,6 +25,8 @@ export default {
 </script>
 
 <style lang="sass">
+@import '@/sass/_variables.sass'
+
 html
   height: 100%
 
@@ -46,7 +41,7 @@ body
     filter: blur(0)
     transition: filter 0.3s
   &.open
-    // overflow: hidden
+    overflow: hidden
     .header,
     .footer,
     .home
@@ -60,6 +55,13 @@ div,
 p
   box-sizing: border-box
 
+input,
+button
+  &:active,
+  &:focus
+    outline: none
+    text-shadow: none
+
 #app
   flex-grow: 1
   display: flex
@@ -69,7 +71,7 @@ p
   -moz-osx-font-smoothing: grayscale
   text-align: center
   color: #ffffff
-  background-color: #333333
+  background-color: $color-back
 
 .fade-in-enter,
 .fade-in-enter-active

@@ -64,7 +64,7 @@ export default {
     },
     getCharacterHomeworld (url) {
       if (url !== null) {
-        return new Promise (function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
           axios.get(url)
             .then(res => {
               resolve(res.data.name)
@@ -75,7 +75,7 @@ export default {
     },
     getCharacterFilms (url) {
       if (url !== null) {
-        return new Promise (function (resolve, reject) {
+        return new Promise(function (resolve, reject) {
           axios.get(url)
             .then(res => {
               resolve(res.data.title)
@@ -145,8 +145,6 @@ export default {
   border-radius: 8px
   box-shadow: 0px 10px 30px 0 rgba(0, 0, 0, 0.4)
   transition: box-shadow 0.5s
-  &:last-child
-    margin-bottom: 0
   &:hover,
   &:active
     box-shadow: 0px 10px 40px 0 rgba(37, 136, 167, 0.38)
@@ -207,6 +205,7 @@ export default {
 .fade-down-leave-active
   animation-name: fadeOutUp
   animation-duration: 0.3s
+  animation-fill-mode: forwards
 
 @keyframes fadeIn
   from
@@ -233,4 +232,15 @@ export default {
     &:hover,
     &:active
       cursor: url('../assets/img/pointer.svg'), pointer
+
+@media(min-width: 768px)
+  .card
+    width: 48.6%
+    margin-right: 2.222vw
+    &:nth-child(2n)
+      margin-right: 0
+
+@media(min-width: 1440px)
+  .card
+    margin-right: 32px
 </style>
