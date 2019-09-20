@@ -42,12 +42,34 @@ export default {
       'addUrl',
       'showPreloader'
     ]),
-    handleLodedData (characters) {
+    getCharacterSpecies (url) {
+      if (url !== null) {
+        return new Promise(function (resolve, reject) {
+          axios.get(url)
+            .then(res => {
+              resolve(res.data.name)
+            })
+            .catch(error => console.log(error))
+        })
+      }
+    },
+    handleLoadedData (characters) {
       this.addUrl(characters.next)
       if (characters.count !== 0) {
-        this.addCharacters(characters.results)
+        let promises = []
+        for (let i = 0; i < characters.results.length; i++) {
+          promises.push(this.getCharacterSpecies(characters.results[i].species))
+        }
+        Promise.all(promises).then(values => {
+          characters.results.forEach(function (elem, i) {
+            elem.speciesName = values[i]
+          })
+          this.addCharacters(characters.results)
+          this.showPreloader([false, 'js-home'])
+        }, reason => {
+          console.log(reason)
+        })
       }
-      this.showPreloader([false, 'js-home'])
     },
     fetch () {
       var context = this
@@ -72,7 +94,7 @@ export default {
       let p1 = this.fetch()
       let p2 = this.timeout()
       Promise.all([p1, p2]).then(values => {
-        context.handleLodedData(values[0])
+        context.handleLoadedData(values[0])
       }, reason => {
         console.log(reason)
       })
@@ -91,7 +113,7 @@ export default {
       if (this.isVisible(secondToLastElement) && secondToLastElement !== this.lastVisibleElement && this.url !== null) {
         this.fetch()
           .then(value => {
-            this.handleLodedData(value)
+            this.handleLoadedData(value)
           })
         this.lastVisibleElement = secondToLastElement
       }
@@ -109,7 +131,6 @@ export default {
   flex-wrap: wrap
   width: 100%
   height: auto
-  border: 1px solid red
 
 @media(min-width: 768px)
   .cards

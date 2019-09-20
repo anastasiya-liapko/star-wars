@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <app-preloader v-show="loading && preloaderId === id"></app-preloader>
+    <app-preloader v-show="loading && preloaderId === id" class="home__preloader"></app-preloader>
     <app-search v-show="!loading && preloaderId === id || preloaderId === 'js-modalCharacter'"></app-search>
     <app-cards v-show="!loading && preloaderId === id || preloaderId === 'js-modalCharacter'"></app-cards>
   </div>
@@ -35,6 +35,7 @@ export default {
 
 <style lang="sass">
 .home
+  position: relative
   flex-grow: 1
   display: flex
   flex-direction: column
@@ -42,7 +43,10 @@ export default {
   width: 100%
   min-height: calc(100vh - 240px)
   padding: 45px 24px 96px
-  border: 1px solid red
+
+.home__preloader
+  width: 100%
+  height: calc(100vh * 2 / 3)
 
 @media (min-width: 768px)
   .home

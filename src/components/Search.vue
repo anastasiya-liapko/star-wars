@@ -96,7 +96,6 @@ export default {
   width: 100%
   height: calc(34px + 14px)
   margin-bottom: 44.5px
-  border: 1px solid green
 
 .search__wrapper
   flex-grow: 1
@@ -157,8 +156,8 @@ export default {
   padding-left: 7.5px
   font-size: 0
   background-color: transparent
+  border: none
   box-sizing: border-box
-  border: 1px solid red
   &::before
     content: ''
     position: absolute
@@ -195,7 +194,6 @@ export default {
     font-size: 0
     background-color: transparent
     box-sizing: border-box
-    border: 1px solid red
     &::before
       content: ''
       position: absolute

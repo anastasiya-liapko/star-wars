@@ -16,7 +16,6 @@
   width: 100vw
   height: 100px
   background-color: $color-card
-  border: 1px solid green
 
 .footer__content
   margin: 0

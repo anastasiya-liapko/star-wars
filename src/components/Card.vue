@@ -9,13 +9,10 @@
         {{ character.name.split('').shift() }}
       </p>
       <p class="card__elem card__elem_type_name">{{ character.name }}</p>
-      <transition name="fade" appear>
-        <p
-          class="card__elem card__elem_type_species"
-          v-if="characterSpecies !== ''">
-          {{ characterSpecies }}
-        </p>
-      </transition>
+      <p
+        class="card__elem card__elem_type_species">
+        {{ character.speciesName }}
+      </p>
     </div>
   </transition>
 </template>
@@ -25,11 +22,6 @@ import axios from 'axios'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data () {
-    return {
-      characterSpecies: ''
-    }
-  },
   computed: {
     ...mapGetters([
       'modalId',
@@ -41,7 +33,6 @@ export default {
   },
   props: ['character'],
   created () {
-    this.getCharacterSpecies(this.character.species)
     document.addEventListener('mouseup', this.hide)
   },
   beforeDestroy: function () {
@@ -53,16 +44,6 @@ export default {
       'hideModal',
       'showPreloader'
     ]),
-    getCharacterSpecies (url) {
-      var context = this
-      if (url !== null) {
-        axios.get(url)
-          .then(res => {
-            context.characterSpecies = res.data.name
-          })
-          .catch(error => console.log(error))
-      }
-    },
     getCharacterHomeworld (url) {
       if (url !== null) {
         return new Promise(function (resolve, reject) {
@@ -94,8 +75,8 @@ export default {
       }
     },
     showModalCharacter (character, modalId) {
-      this.showModal(modalId)
       this.showPreloader([true, 'js-modalCharacter'])
+      this.showModal(modalId)
 
       var avatar = document.querySelector('.modal__avatar')
       var name = document.querySelector('.modal__name')
@@ -109,7 +90,7 @@ export default {
       avatar.setAttribute('style', 'background-color: #' + this.randomColor)
       name.textContent = character['name']
       birth.textContent = character['birth_year']
-      species.textContent = this.characterSpecies
+      species.textContent = character['speciesName']
       gender.textContent = character['gender']
 
       this.getCharacterHomeworld(character['homeworld'])
@@ -127,7 +108,6 @@ export default {
             films.innerHTML += '<span>' + film + '</span>'
           })
           this.showPreloader([false, 'js-modalCharacter'])
-          // this.showModal(modalId)
         })
     }
   }
@@ -140,6 +120,7 @@ export default {
 .card
   display: flex
   flex-direction: column
+  justify-content: center
   align-items: center
   width: 100%
   min-height: 200px
@@ -212,26 +193,6 @@ export default {
   animation-duration: 0.3s
   animation-fill-mode: forwards
 
-@keyframes fadeIn
-  from
-    opacity: 0
-  to
-    opacity: 1
-
-@keyframes fadeOut
-  from
-    opacity: 1
-  to
-    opacity: 0
-
-.fade-enter-active
-  animation-name: fadeIn
-  animation-duration: 0.5s
-
-.fade-leave-active
-  animation-name: fadeOut
-  animation-duration: 0.3s
-
 @media (min-width: 768px)
   .card
     &:hover,
@@ -241,11 +202,13 @@ export default {
 @media(min-width: 768px)
   .card
     width: 48.6%
+    min-height: 22.222vw
     margin-right: 2.222vw
     &:nth-child(2n)
       margin-right: 0
 
 @media(min-width: 1440px)
   .card
+    min-height: 320px
     margin-right: 32px
 </style>

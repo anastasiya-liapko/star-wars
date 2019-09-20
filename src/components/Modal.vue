@@ -1,12 +1,12 @@
 <template>
-  <transition name="modal" appear>
-    <div
-      class="modal-mask"
-      v-show="modalShow && modalId === id">
-      <div class="modal-wrapper">
+  <div
+    class="modal-mask"
+    v-show="modalShow && modalId === id">
+    <div class="modal-wrapper">
 
-        <app-preloader v-show="loading && preloaderId === id"></app-preloader>
+      <app-preloader v-show="loading && preloaderId === id"></app-preloader>
 
+      <transition name="modal">
         <div v-show="!loading && preloaderId === id" :id="id" class="modal">
           <button class="modal__close" @click="hideModal(id)"></button>
           <div class="modal__header">
@@ -17,7 +17,7 @@
           <div class="modal__content">
             <div class="modal__content-item modal__content-item_type_birth">
               <p class="modal__content-item-name">Birth year</p>
-              <p class="modal__content-item-descr">Birth year Birth year Birth year Birth year Birth year Birth year Birth year Birth year</p>
+              <p class="modal__content-item-descr">Birth year</p>
             </div>
             <div class="modal__content-item modal__content-item_type_species">
               <p class="modal__content-item-name">Species</p>
@@ -37,9 +37,9 @@
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
-  </transition>
+  </div>
 </template>
 
 <script>
@@ -88,19 +88,15 @@ export default {
   background-color: rgba(128, 128, 128, 0.01)
   transition: opacity .3s cubic-bezier(0.390, 0.575, 0.565, 1.000)
 
-// .modal-wrapper
-//   display: table-cell
-//   vertical-align: middle
-
 .modal
+  z-index: 9999
   position: relative
   width: 100vw
-  min-height: 100vh
-  height: auto
+  height: 100vh
   padding: 48px 24px
   background-color: $color-card
+  overflow-y: scroll
   transition: all .3s cubic-bezier(0.390, 0.575, 0.565, 1.000)
-  border: 1px solid green
 
 .modal__close
   position: absolute
@@ -120,7 +116,6 @@ export default {
     background-position: center
     background-repeat: no-repeat
     background-image: url('../assets/img/close.svg')
-    border: 1px solid red
   &:active
     outline: 0
     box-shadow: 0
@@ -165,7 +160,6 @@ export default {
 .modal__content-item
   display: flex
   width: 100%
-  border: 1px solid red
 
 .modal__content-item-name
   position: relative
@@ -185,7 +179,6 @@ export default {
   line-height: 1
   text-align: left
   color: #808080
-  border: 1px solid green
   &::before
     content: ''
     position: absolute
@@ -196,7 +189,6 @@ export default {
     background-size: contain
     background-position: center
     background-repeat: no-repeat
-    border: 1px solid red
 
 .modal__content-item_type_birth
   .modal__content-item-name
@@ -234,7 +226,6 @@ export default {
   line-height: 1
   text-align: left
   color: #ffffff
-  border: 1px solid green
 
 .modal__content-item_type_films
   .modal__content-item-descr span
@@ -249,8 +240,8 @@ export default {
 .modal-leave-active
   opacity: 0
 
-.modal-enter .modal-container,
-.modal-leave-active .modal-container
+.modal-enter
+.modal-leave-active
   -webkit-transform: scale(1.1)
   transform: scale(1.1)
 
@@ -265,7 +256,7 @@ export default {
 @media(min-width: 768px)
   .modal
     width: calc(100vw - 48px)
-    min-height: auto
+    height: auto
     padding: 80px
     padding-bottom: 76px
     border-radius: 8px
