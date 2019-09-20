@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <app-preloader v-if="loading"></app-preloader>
-    <app-search></app-search>
-    <app-cards></app-cards>
+    <app-preloader v-show="loading && preloaderId === id"></app-preloader>
+    <app-search v-show="!loading && preloaderId === id || preloaderId === 'js-modalCharacter'"></app-search>
+    <app-cards v-show="!loading && preloaderId === id || preloaderId === 'js-modalCharacter'"></app-cards>
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
+import { mapGetters } from 'vuex'
 import Preloader from '@/components/Preloader.vue'
 import Search from '@/components/Search.vue'
 import Cards from '@/components/Cards.vue'
@@ -16,31 +16,14 @@ export default {
   name: 'home',
   data () {
     return {
-      loading: false
+      id: 'js-home'
     }
   },
-  created () {
-    // var context = this
-
-    // axios.interceptors.request.use(config => {
-    //   // perform a task before the request is sent
-    //   console.log('Request was sent', config);
-    //   context.loading = true
-    //   return config;
-    // }, error => {
-    //   // handle the error
-    //   return Promise.reject(error);
-    // });
-
-    // axios.interceptors.response.use((response) => {
-    //   // do something with the response data
-    //   console.log('Response was received');
-    //   context.loading = false
-    //   return response;
-    // }, error => {
-    //   // handle the response error
-    //   return Promise.reject(error);
-    // });
+  computed: {
+    ...mapGetters([
+      'loading',
+      'preloaderId'
+    ])
   },
   components: {
     'app-preloader': Preloader,

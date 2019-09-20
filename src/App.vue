@@ -77,6 +77,10 @@ button
 .fade-in-enter-active
   animation: fade-in 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
 
+.fade-in-leave,
+.fade-in-leave-active
+  animation: fade-out 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both
+
 @keyframes fade-in
   0%
     opacity: 0
@@ -88,4 +92,5 @@ button
     opacity: 1
   100%
     opacity: 0
+
 </style>

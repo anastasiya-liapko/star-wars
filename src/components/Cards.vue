@@ -18,7 +18,8 @@ export default {
   data () {
     return {
       domen: process.env.VUE_APP_API,
-      lastVisibleElement: ''
+      lastVisibleElement: '',
+      timeoutTime: 2000
     }
   },
   computed: {
@@ -29,7 +30,7 @@ export default {
   },
   created () {
     this.addUrl(this.domen + 'people/')
-    this.fetch()
+    this.showCharacters()
     document.addEventListener('scroll', this.showVisible)
   },
   beforeDestroy: function () {
@@ -38,22 +39,43 @@ export default {
   methods: {
     ...mapActions([
       'addCharacters',
-      'addUrl'
+      'addUrl',
+      'showPreloader'
     ]),
+    handleLodedData (characters) {
+      this.addUrl(characters.next)
+      if (characters.count !== 0) {
+        this.addCharacters(characters.results)
+      }
+      this.showPreloader([false, 'js-home'])
+    },
     fetch () {
       var context = this
 
       if (context.url !== null) {
-        axios.get(context.url)
-          .then(res => {
-            context.addUrl(res.data.next)
-
-            if (res.data.count !== 0) {
-              context.addCharacters(res.data.results)
-            }
-          })
-          .catch(error => console.log(error))
+        return new Promise(function (resolve, reject) {
+          axios.get(context.url)
+            .then(res => {
+              resolve(res.data)
+            })
+            .catch(error => console.log(error))
+        })
       }
+    },
+    timeout () {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, this.timeoutTime)
+      })
+    },
+    showCharacters () {
+      var context = this
+      let p1 = this.fetch()
+      let p2 = this.timeout()
+      Promise.all([p1, p2]).then(values => {
+        context.handleLodedData(values[0])
+      }, reason => {
+        console.log(reason)
+      })
     },
     isVisible (elem) {
       if (elem === undefined) return false
@@ -66,8 +88,11 @@ export default {
     showVisible () {
       var elements = document.getElementsByClassName('card')
       var secondToLastElement = elements[elements.length - 1]
-      if (this.isVisible(secondToLastElement) && secondToLastElement !== this.lastVisibleElement) {
+      if (this.isVisible(secondToLastElement) && secondToLastElement !== this.lastVisibleElement && this.url !== null) {
         this.fetch()
+          .then(value => {
+            this.handleLodedData(value)
+          })
         this.lastVisibleElement = secondToLastElement
       }
     }

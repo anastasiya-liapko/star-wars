@@ -1,30 +1,32 @@
 <template>
-  <form class="search">
-    <label
-      for="js-searchInput"
-      class="search__label"
-      :class="{show: showLabel}">
-      Search by name
-    </label>
-    <div class="search__wrapper">
-      <input
-        id="js-searchInput"
-        class="search__field"
-        type="text"
-        name="search"
-        placeholder="Search by name"
-        @focus="showLabel = true"
-        @blur="showLabel = false"
-        @keyup="debounce"
-        v-model="data.search">
-      <button
-        class="search__submit"
-        type="submit"
-        @click.prevent>
-        Search
-      </button>
-    </div>
-  </form>
+  <transition name="fade-in" appear>
+    <form class="search">
+      <label
+        for="js-searchInput"
+        class="search__label"
+        :class="{show: showLabel}">
+        Search by name
+      </label>
+      <div class="search__wrapper">
+        <input
+          id="js-searchInput"
+          class="search__field"
+          type="text"
+          name="search"
+          placeholder="Search by name"
+          @focus="showLabel = true"
+          @blur="showLabel = false"
+          @keyup="debounce"
+          v-model="data.search">
+        <button
+          class="search__submit"
+          type="submit"
+          @click.prevent>
+          Search
+        </button>
+      </div>
+    </form>
+  </transition>
 </template>
 
 <script>
@@ -113,7 +115,7 @@ export default {
   color: $color-text
   opacity: 0
   box-sizing: border-box
-  transition: opacity 0.5s
+  transition: opacity 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000)
   &.show
     opacity: 1
 
@@ -137,7 +139,7 @@ export default {
     font-weight: 500
     color: $color-text
     opacity: 1
-    transition: opacity 0.5s
+    transition: opacity 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000)
   &:focus
     &::placeholder
       opacity: 0

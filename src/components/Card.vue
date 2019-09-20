@@ -50,7 +50,8 @@ export default {
   methods: {
     ...mapActions([
       'showModal',
-      'hideModal'
+      'hideModal',
+      'showPreloader'
     ]),
     getCharacterSpecies (url) {
       var context = this
@@ -93,6 +94,9 @@ export default {
       }
     },
     showModalCharacter (character, modalId) {
+      this.showModal(modalId)
+      this.showPreloader([true, 'js-modalCharacter'])
+
       var avatar = document.querySelector('.modal__avatar')
       var name = document.querySelector('.modal__name')
       var birth = document.querySelector('.modal__content-item_type_birth .modal__content-item-descr')
@@ -122,7 +126,8 @@ export default {
           resultFilms.forEach(function (film) {
             films.innerHTML += '<span>' + film + '</span>'
           })
-          this.showModal(modalId)
+          this.showPreloader([false, 'js-modalCharacter'])
+          // this.showModal(modalId)
         })
     }
   }

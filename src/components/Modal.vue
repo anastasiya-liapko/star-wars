@@ -4,10 +4,11 @@
       class="modal-mask"
       v-show="modalShow && modalId === id">
       <div class="modal-wrapper">
-        <div :id="id" class="modal">
 
+        <app-preloader v-show="loading && preloaderId === id"></app-preloader>
+
+        <div v-show="!loading && preloaderId === id" :id="id" class="modal">
           <button class="modal__close" @click="hideModal(id)"></button>
-
           <div class="modal__header">
             <p class="modal__avatar">N</p>
             <p class="modal__name">Name</p>
@@ -43,6 +44,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import Preloader from '@/components/Preloader.vue'
 
 export default {
   data () {
@@ -53,13 +55,18 @@ export default {
   computed: {
     ...mapGetters([
       'modalShow',
-      'modalId'
+      'modalId',
+      'loading',
+      'preloaderId'
     ])
   },
   methods: {
     ...mapActions([
       'hideModal'
     ])
+  },
+  components: {
+    'app-preloader': Preloader
   }
 }
 </script>
@@ -79,7 +86,7 @@ export default {
   width: 100%
   height: 100vh
   background-color: rgba(128, 128, 128, 0.01)
-  transition: opacity .3s ease
+  transition: opacity .3s cubic-bezier(0.390, 0.575, 0.565, 1.000)
 
 // .modal-wrapper
 //   display: table-cell
@@ -92,7 +99,7 @@ export default {
   height: auto
   padding: 48px 24px
   background-color: $color-card
-  transition: all .3s ease
+  transition: all .3s cubic-bezier(0.390, 0.575, 0.565, 1.000)
   border: 1px solid green
 
 .modal__close
